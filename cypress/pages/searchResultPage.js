@@ -1,28 +1,21 @@
-import BasePage from "../commons/BasePage"
+class searchResultPage {
+  allSearchResult = "#search";
+  searchResultTitles = "//*[@data-header-feature='0']/div/a/h3";
+  specificSearchResultTitles = "(//*[@data-header-feature='0']/div/a/h3)[number]";
 
-class searchResultPage extends BasePage {
-    area = "(//*[@data-selenium='area-city'])[number]"
-    hotelName = "a[data-element-index='number'] > div:nth-child(1) > div:nth-child(2) > div > header > div > h3"
-    firstHotel = '(//ol[@class="hotel-list-container"]/li)[number]/div/a'
-
-    verifyAreaOfXFirstXHotelsContainKeyword(numberHotels, keyword) {
-        for (let i = 1; i < numberHotels + 1; i++) {
-            let path = this.area.replace("number", i)
-            cy.xpath(path).scrollIntoView().should('contain.text', keyword)
-        }
-    }
-
-    selectHotel(order) {
-        let locator = this.firstHotel.replace("number", order)
-        cy.xpath(locator).invoke('removeAttr', 'target').click()
-    }
-
-    getHotelName(order) {
-        let locator = this.hotelName.replace("number", order - 1)
-        cy.get(locator).invoke('text').as('innerText')
-        return cy.get('@innerText')
-    }
-
+  searchResultContainsSearchKeyword(keyword) {
+    cy.wait(3000).scrollTo("bottom");
+    cy.xpath(this.searchResultTitles).then((list) => {
+      const numberOfResults = Cypress.$(list).length;
+      for (let i = 1; i <= numberOfResults; i++) {
+        let specificSearchResult = this.specificSearchResultTitles.replace("number", i);
+        cy.xpath(specificSearchResult)
+          .scrollIntoView()
+          .invoke("text")
+          .should('contain', keyword)
+      }
+    });
+  }
 }
 
-export default searchResultPage
+export default new searchResultPage();

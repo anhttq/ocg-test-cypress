@@ -7,7 +7,7 @@ module.exports = defineConfig({
       this.screenshotOnRunFailure = true
       require('cypress-mochawesome-reporter/plugin')(on) //for html reports
     },
-    baseUrl: "https://www.agoda.com",
+    baseUrl: "https://www.google.com/",
     scrollBehavior: false
   },
 });
