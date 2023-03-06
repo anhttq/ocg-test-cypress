@@ -1,1 +1,1 @@
-# cypress-agoda-project
+# This is the repo created for codility test of OCG
